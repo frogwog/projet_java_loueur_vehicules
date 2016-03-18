@@ -6,29 +6,9 @@ import java.util.ListIterator;
 /**
  * Created by Eddy on 18/03/16.
  */
-public class Emprunteur implements List {
+public class Exemplaire implements List {
 
-    private int id;
-    private String nom, prenom;
-    private String adresse;
-
-    public Emprunteur (int id, String nom, String prenom, String adresse) {
-
-        this.id = id;
-        this.nom = nom;
-        this.prenom = prenom;
-        this.adresse = adresse;
-
-    }
-
-    public void louer () {
-
-
-    }
-
-    public void ramener () {
-
-    }
+    private int numero, kilometres;
 
     @Override
     public int size() {
