@@ -10,6 +10,11 @@ public class Exemplaire implements List {
 
     private int numero, kilometres;
 
+    public Exemplaire (int numero, int kilometres) {
+        this.numero = numero;
+        this.kilometres = kilometres;
+    }
+
     @Override
     public int size() {
         return 0;
