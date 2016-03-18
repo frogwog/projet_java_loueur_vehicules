@@ -8,6 +8,8 @@
  * @author 20120032
  */
 public class Date {
+
+
     private static String[] MOIS =
     {
         "January", "February", "March", 
@@ -91,6 +93,4 @@ public class Date {
         return String.format("%2d %s %-2d", jour, mois, annee);
     }
 }
-    
-    
-}
+
