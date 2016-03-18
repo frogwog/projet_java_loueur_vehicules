@@ -8,14 +8,12 @@
  * @author 20120032
  */
 public class Date {
-
-
     private static String[] MOIS =
     {
-        "January", "February", "March", 
-        "April", "May", "June", "July", 
-        "August", "September", "October", 
-        "November", "December"
+        "Janvier", "Fevrier", "Mars", 
+        "Avril", "Mai", "Juin", "Juillet", 
+        "Aout", "Septembre", "Octobre", 
+        "Novembre", "Decembre"
     };
 
     public static String getMoisIndex(int index)
@@ -93,4 +91,6 @@ public class Date {
         return String.format("%2d %s %-2d", jour, mois, annee);
     }
 }
+    
+    
 
