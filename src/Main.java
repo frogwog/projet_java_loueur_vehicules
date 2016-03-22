@@ -8,28 +8,37 @@ public class Main {
 
     public static void main(String [] args) {
 
-        List e1 = new Exemplaire(1,12000);
+        Exemplaire e1 = new Exemplaire(1,12000);
 
-        List e2 = new Exemplaire(2,130000);
+        Exemplaire e2 = new Exemplaire(2,130000);
 
-        List v1 = new Auto("Audi","A8");
+        Vehicule v1 = new Auto("Audi","A8");
+        Vehicule v2 = new Moto("Honda", 1000);
 
-        List emp1 = new Emprunteur(123,"Soares","Edouard","Paris");
+        Emprunteur emp1 = new Emprunteur(123,"Soares","Edouard","Paris");
 
-        List emp2 = new Emprunteur(124,"Garnier","Florian","Paris");
+        Emprunteur emp2 = new Emprunteur(124,"Garnier","Florian","Paris");
+
+        List<Vehicule> listeVehicules = new ArrayList<Vehicule>();
+        List<Emprunteur> listeEmprunteurs = new ArrayList<Emprunteur>();
+
+        listeVehicules.add(v1);
+        listeVehicules.add(v2);
+
+        listeEmprunteurs.add(emp1);
+        listeEmprunteurs.add(emp2);
 
 
-        List maListe = new ArrayList();
+        for (Emprunteur e : listeEmprunteurs) {
 
-        maListe.add(e1);
-        maListe.add(e2);
-        maListe.add(v1);
-        maListe.add(emp1);
-        maListe.add(emp2);
+            e.print();
+            System.out.println();
+        }
 
-        for (int i = 0 ; i < maListe.size() ; i++) {
+        for (Vehicule v : listeVehicules) {
 
-            System.out.println(maListe.get(i));
+            v.print();
+            System.out.println();
         }
 
 
