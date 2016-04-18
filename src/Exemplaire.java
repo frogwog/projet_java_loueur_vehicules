@@ -6,11 +6,13 @@ import java.util.ListIterator;
 /**
  * Created by Eddy on 18/03/16.
  */
-public class Exemplaire {
+public class Exemplaire  {
 
     private int numero, kilometres;
+    private Vehicule vehiculeReference;
 
-    public Exemplaire (int numero, int kilometres) {
+    public Exemplaire (Vehicule vehiculeReference, int numero, int kilometres) {
+        this.vehiculeReference = vehiculeReference;
         this.numero = numero;
         this.kilometres = kilometres;
     }
@@ -18,18 +20,25 @@ public class Exemplaire {
     //--------Getters--------------------------
 
     public int getNumero() {
+
         return this.numero;
     }
 
     public int getKilometres() {
+
         return this.kilometres;
+    }
+
+    public Vehicule getVehiculeReference() {
+        return vehiculeReference;
     }
 
     //-----------------------------------
 
     public void print() {
-        System.out.println("Nom : " + this.numero);
-        System.out.println("Prenom : " + this.kilometres);
+        vehiculeReference.print();
+        System.out.println("Numero : " + this.numero);
+        System.out.println("kilométrage : " + this.kilometres);
 
     }
 
