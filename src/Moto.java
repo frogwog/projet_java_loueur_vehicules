@@ -5,10 +5,11 @@ public class Moto extends Vehicule{
 
     private int cylindree;
 
-    public Moto (String marque, int cylindree) {
+    public Moto (String marque, int cylindree, int ID) {
         this.marque = marque;
         this.cylindree = cylindree;
         this.type = "moto";
+        this.ID = ID;
     }
 
     public int getCylindree() {

@@ -9,7 +9,11 @@ import java.util.ListIterator;
 abstract class Vehicule {
 
     protected String marque, type;
+    protected int ID;
 
+    public int getID() {
+        return ID;
+    }
 
     public String getMarque() {
         return this.marque;

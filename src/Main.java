@@ -15,31 +15,16 @@ public class Main {
         BDD bdd = new BDD("jdbc:mysql://localhost:3306/LocationVoiture","root", "root");
 
 
-        Auto v1 = new Auto("Audi","A8");
-
-        Moto v2 = new Moto("Honda", 1000);
-
-        Exemplaire e1 = new Exemplaire(v1,1,12000);
-
-        Exemplaire e2 = new Exemplaire(v1,2,130000);
-
 
         Emprunteur emp1 = new Emprunteur(123,"Soares","Edouard","Paris");
 
         Emprunteur emp2 = new Emprunteur(124,"Garnier","Florian","Paris");
 
-        ArrayList<Vehicule> listeVehicules = new ArrayList<Vehicule>();
-        ArrayList<Emprunteur> listeEmprunteurs = new ArrayList<Emprunteur>();
-        ArrayList<Exemplaire> listeExemplaires = new ArrayList<Exemplaire>();
-
-        listeVehicules = bdd.recupererTousLesVehicules();
-
-        listeExemplaires.add(e1);
-        listeExemplaires.add(e2);
+        ArrayList<Vehicule> listeVehicules = bdd.recupererTousLesVehicules();
+        ArrayList<Emprunteur> listeEmprunteurs = null;
+        ArrayList<Exemplaire> listeExemplaires = bdd.recupererExemplaires(listeVehicules.get(30));
 
 
-        listeEmprunteurs.add(emp1);
-        listeEmprunteurs.add(emp2);
 
 
         for (Exemplaire e : listeExemplaires) {
@@ -49,17 +34,17 @@ public class Main {
         }
 
 
-        for (Emprunteur e : listeEmprunteurs) {
+       /* for (Emprunteur e : listeEmprunteurs) {
 
             e.print();
             System.out.println();
         }
 
-        for (Vehicule v : listeVehicules) {
+        /*for (Vehicule v : listeVehicules) {
 
             v.print();
             System.out.println();
-        }
+        }*/
 
 
 

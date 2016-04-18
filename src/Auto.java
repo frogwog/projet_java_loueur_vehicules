@@ -5,10 +5,11 @@ public class Auto extends Vehicule {
 
     private String modele;
 
-    public Auto(String marque, String modele) {
+    public Auto(String marque, String modele, int ID) {
         this.marque = marque;
         this.modele = modele;
         this.type = "auto";
+        this.ID = ID;
     }
 
     public String getModele() {
