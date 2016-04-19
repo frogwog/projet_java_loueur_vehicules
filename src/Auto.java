@@ -17,10 +17,17 @@ public class Auto extends Vehicule {
     }
 
 
+
+
     @Override
     void print() {
         System.out.println("Type : " + this.type);
         System.out.println("Marque : " + this.marque);
         System.out.println("Modele : " + this.modele);
+    }
+
+    @Override
+    int getCylindree() {
+        return 0;
     }
 }

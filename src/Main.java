@@ -22,7 +22,15 @@ public class Main {
 
         ArrayList<Vehicule> listeVehicules = bdd.recupererTousLesVehicules();
         ArrayList<Emprunteur> listeEmprunteurs = null;
-        ArrayList<Exemplaire> listeExemplaires = bdd.recupererExemplaires(listeVehicules.get(30));
+        ArrayList<Exemplaire> listeExemplaires = new ArrayList<Exemplaire>();
+
+        bdd.ajouterUnExemplaire(listeVehicules.get(1), 85000, 3);
+
+        listeExemplaires = bdd.recupererExemplaires(listeVehicules.get(1));
+
+        //bdd.supprimerUnExemplaire(listeExemplaires.get(0));
+
+
 
 
 
@@ -40,6 +48,7 @@ public class Main {
             System.out.println();
         }
 
+        */
         /*for (Vehicule v : listeVehicules) {
 
             v.print();

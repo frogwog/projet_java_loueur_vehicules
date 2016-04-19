@@ -9,15 +9,22 @@ import java.util.ListIterator;
 public class Exemplaire  {
 
     private int numero, kilometres;
+    private static int ID;
     private Vehicule vehiculeReference;
 
-    public Exemplaire (Vehicule vehiculeReference, int numero, int kilometres) {
+    public Exemplaire (Vehicule vehiculeReference, int numero, int kilometres, int ID) {
         this.vehiculeReference = vehiculeReference;
         this.numero = numero;
         this.kilometres = kilometres;
+        this.ID = ID;
     }
 
     //--------Getters--------------------------
+
+
+    public static int getID() {
+        return ID;
+    }
 
     public int getNumero() {
 

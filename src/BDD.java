@@ -14,6 +14,8 @@ public class BDD {
         this.passwd = passwd;
     }
 
+    // Fonction qui permet de récupérer la liste de tous les véhicules disponibles en base de donnée
+
     public ArrayList<Vehicule> recupererTousLesVehicules() {
 
         // Information d'accès à la base de données
@@ -81,6 +83,7 @@ public class BDD {
 
     }
 
+    //Fonction qui permet de récupérer tous les exemplaires d'un véhicule.
 
     public ArrayList<Exemplaire> recupererExemplaires(Vehicule v) {
 
@@ -92,7 +95,7 @@ public class BDD {
 
         ArrayList<Exemplaire> listeDesExemplaires = new ArrayList<Exemplaire>();
 
-        int numero, kilometrage;
+        int numero, kilometrage, ID;
 
 
 
@@ -107,7 +110,7 @@ public class BDD {
             // Etape 3 : Création d'un statement
             st = cn.createStatement();
 
-            String sql = "SELECT numero, Kilometrage " +
+            String sql = "SELECT numero, Kilometrage, Exemplaires.ID " +
                     "FROM Exemplaires, Vehicules " +
                     "WHERE Vehicules.ID = " + v.getID() +
                     " AND Exemplaires.Marque = Vehicules.Marque " +
@@ -122,8 +125,9 @@ public class BDD {
 
                 numero = rs.getInt("numero");
                 kilometrage = rs.getInt("Kilometrage");
+                ID = rs.getInt("ID");
 
-                listeDesExemplaires.add(new Exemplaire(v,numero,kilometrage));
+                listeDesExemplaires.add(new Exemplaire(v,numero,kilometrage, ID));
 
             }
         } catch (SQLException e) {
@@ -142,6 +146,89 @@ public class BDD {
 
         return listeDesExemplaires;
 
+    }
+
+    public void supprimerUnExemplaire(Exemplaire exemplaire) {
+
+        Connection cn =null;
+        Statement st =null;
+
+        try {
+
+            // Etape 1 : Chargement du driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Etape 2 : récupération de la connexion
+            cn = DriverManager.getConnection(url, login, passwd);
+
+            // Etape 3 : Création d'un statement
+            st = cn.createStatement();
+
+            String sql = "DELETE FROM Exemplaires WHERE Exemplaires.ID =  " + exemplaire.getID();
+
+            // Etape 4 : exécution requête
+            st.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            try {
+                // Etape 6 : libérer ressources de la mémoire.
+                cn.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    public void ajouterUnExemplaire(Vehicule v, int kilometrage, int numero) {
+
+        Connection cn =null;
+        Statement st =null;
+        String sql = null;
+
+        try {
+
+            // Etape 1 : Chargement du driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Etape 2 : récupération de la connexion
+            cn = DriverManager.getConnection(url, login, passwd);
+
+            // Etape 3 : Création d'un statement
+            st = cn.createStatement();
+
+            if (v.getType() == "Moto") {
+
+                sql = "INSERT INTO Exemplaires (Marque, Type, Cylindree, Kilometrage, numero) " +
+                        "VALUES ('" + v.getMarque() + "', '"+v.getType()+"', " + v.getCylindree()+"," +kilometrage+ ", " +numero+ ")";
+            }
+
+            else sql = "INSERT INTO Exemplaires (Marque, Type, Modele, Kilometrage, numero) " +
+                    "VALUES ('" + v.getMarque() + "', '"+v.getType()+"', '" + v.getModele()+"'," +kilometrage+ ", " +numero+ ")";
+
+            // Etape 4 : exécution requête
+            st.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            try {
+                // Etape 6 : libérer ressources de la mémoire.
+                cn.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

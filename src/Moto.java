@@ -12,6 +12,8 @@ public class Moto extends Vehicule{
         this.ID = ID;
     }
 
+
+
     public int getCylindree() {
         return this.cylindree;
     }
@@ -22,5 +24,10 @@ public class Moto extends Vehicule{
         System.out.println("type : " + this.type);
         System.out.println("Marque : " + this.marque);
         System.out.println("cylindrée : " + this.cylindree);
+    }
+
+    @Override
+    String getModele() {
+        return null;
     }
 }

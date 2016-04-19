@@ -23,6 +23,10 @@ abstract class Vehicule {
         return this.type;
     }
 
+    abstract String getModele();
+
+    abstract int getCylindree();
+
     abstract void print();
 
 
