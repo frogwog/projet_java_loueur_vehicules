@@ -8,7 +8,7 @@ public class Moto extends Vehicule{
     public Moto (String marque, int cylindree, int ID) {
         this.marque = marque;
         this.cylindree = cylindree;
-        this.type = "moto";
+        this.type = "Moto";
         this.ID = ID;
     }
 

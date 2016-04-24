@@ -5,5 +5,8 @@
 	<contentEntry url="file://$MODULE_DIR$"/>
 	<levels>
 		<level name="mysql-connector-java-5.1.37-bin" value="project"/>
+		<level name="jinput" value="project"/>
+		<level name="lwjgl" value="project"/>
+		<level name="slick" value="project"/>
 	</levels>
 </component>

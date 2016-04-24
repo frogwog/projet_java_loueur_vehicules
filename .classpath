@@ -3,5 +3,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/mysql-connector-java-5.1.37-bin"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/jinput"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lwjgl"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/slick"/>
 	<classpathentry kind="output" path="out/production/projet_java_loueur_vehicules"/>
 </classpath>

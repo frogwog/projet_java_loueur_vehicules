@@ -45,7 +45,7 @@ public class Emprunteur {
         System.out.println("Nom : " + this.nom);
         System.out.println("Prenom : " + this.prenom);
         System.out.println("adresse : " + this.adresse);
-        System.out.println("ID : " + this.id);
+
     }
 
     public void louer() {

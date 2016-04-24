@@ -11,49 +11,11 @@ public class Main {
 
     public static void main(String [] args) {
 
-
-        BDD bdd = new BDD("jdbc:mysql://localhost:3306/LocationVoiture","root", "root");
-
-
-
-        Emprunteur emp1 = new Emprunteur(123,"Soares","Edouard","Paris");
-
-        Emprunteur emp2 = new Emprunteur(124,"Garnier","Florian","Paris");
-
-        ArrayList<Vehicule> listeVehicules = bdd.recupererTousLesVehicules();
-        ArrayList<Emprunteur> listeEmprunteurs = null;
-        ArrayList<Exemplaire> listeExemplaires = new ArrayList<Exemplaire>();
-
-        bdd.ajouterUnExemplaire(listeVehicules.get(1), 85000, 3);
-
-        listeExemplaires = bdd.recupererExemplaires(listeVehicules.get(1));
-
-        //bdd.supprimerUnExemplaire(listeExemplaires.get(0));
+        Fenetre fen = new Fenetre();
 
 
 
 
-
-
-        for (Exemplaire e : listeExemplaires) {
-
-            e.print();
-            System.out.println();
-        }
-
-
-       /* for (Emprunteur e : listeEmprunteurs) {
-
-            e.print();
-            System.out.println();
-        }
-
-        */
-        /*for (Vehicule v : listeVehicules) {
-
-            v.print();
-            System.out.println();
-        }*/
 
 
 

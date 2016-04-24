@@ -8,7 +8,7 @@ public class Auto extends Vehicule {
     public Auto(String marque, String modele, int ID) {
         this.marque = marque;
         this.modele = modele;
-        this.type = "auto";
+        this.type = "Auto";
         this.ID = ID;
     }
 
