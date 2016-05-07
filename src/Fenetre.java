@@ -1,110 +1,142 @@
-import com.sun.corba.se.impl.orbutil.graph.Graph;
-
 import javax.swing.*;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 /**
- * Created by Eddy on 19/04/16.
+ * Created by Eddy on 07/05/16.
  */
 public class Fenetre extends JFrame {
 
-    private JTable tableau, t2;
-    private JButton change = new JButton("Changer la taille");
-    private JButton retablir = new JButton("Rétablir");
+    private ModeleVehicule modeleVehicule;
+    private ModeleExemplaire modeleExemplaire;
+    private JTable tableau;
+    private Formulaire form;
 
-    public Fenetre(){
+    public Fenetre() {
+
+        setTitle("Liste des Véhicules");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setSize(700, 500);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("JTable");
-        this.setSize(600, 400);
 
-        BDD bdd = new BDD("jdbc:mysql://localhost:3306/LocationVoiture","root", "root");
+        modeleVehicule = new ModeleVehicule();
+        tableau = new JTable(modeleVehicule);
 
-        ArrayList<Vehicule> listeVehicules = bdd.recupererTousLesVehicules();
+        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 
+        JPanel boutons = new JPanel();
 
+        boutons.add(new JButton(new SelectAction()));
 
-        String  title[] = {"Marque", "Type", "Modele", "Cylindree"};
-        this.tableau = new JTable(listeVehicules.size(), title.length);
+        getContentPane().add(boutons, BorderLayout.SOUTH);
+        setVisible(true);
 
-        for (int i = 0 ; i < listeVehicules.size() ; i++) {
-
-            this.tableau.setValueAt(listeVehicules.get(i).getMarque(), i, 0);
-            this.tableau.setValueAt(listeVehicules.get(i).getType(), i, 1);
-            System.out.println(listeVehicules.get(i).getType());
-
-            if (listeVehicules.get(i).getType() == "Moto") {
-                this.tableau.setValueAt("---", i, 2);
-                this.tableau.setValueAt(listeVehicules.get(i).getCylindree(), i, 3);
-
-            }
-            else {
-                this.tableau.setValueAt(listeVehicules.get(i).getModele(), i, 2);
-                this.tableau.setValueAt("---", i, 3);
-            }
-
-        }
-
-        //this.t2 = new JTable(this.tableau, title);
-
-        JPanel pan = new JPanel();
-
-        change.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0) {
-                changeSize(200, 80);
-                change.setEnabled(false);
-                retablir.setEnabled(true);
-            }
-        });
-
-        retablir.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent arg0) {
-
-                changeSize(75, 16);
-                change.setEnabled(true);
-                retablir.setEnabled(false);
-            }
-        });
-
-        retablir.setEnabled(false);
-        pan.add(change);
-        pan.add(retablir);
-
-        this.getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
-        this.getContentPane().add(pan, BorderLayout.SOUTH);
     }
 
-    /**
-     * Change la taille d'une ligne et d'une colonne
-     * J'ai mis deux boucles afin que vous puissiez voir
-     * comment parcourir les colonnes et les lignes
-     */
-    public void changeSize(int width, int height){
-        //Nous créons un objet TableColumn afin de travailler sur notre colonne
-        TableColumn col;
-        for(int i = 0; i < tableau.getColumnCount(); i++){
-            if(i == 1){
-                //On récupère le modèle de la colonne
-                col = tableau.getColumnModel().getColumn(i);
-                //On lui affecte la nouvelle valeur
-                col.setPreferredWidth(width);
-            }
-        }
-        for(int i = 0; i < tableau.getRowCount(); i++){
-            //On affecte la taille de la ligne à l'indice spécifié !
-            if(i == 1)
-                tableau.setRowHeight(i, height);
-        }
+    public Fenetre(Vehicule v) {
+
+        setTitle("Liste des Exemplaires");
+        this.setSize(700, 500);
+        this.setLocationRelativeTo(null);
+
+        modeleExemplaire = new ModeleExemplaire(v);
+        tableau = new JTable(modeleExemplaire);
+
+        getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
+
+        JPanel boutons = new JPanel();
+
+        boutons.add(new JButton(new RemoveAction()));
+        boutons.add(new JButton(new AddAction()));
+
+        getContentPane().add(boutons, BorderLayout.SOUTH);
+
+        setVisible(true);
     }
 
-    public static void main(String[] args){
-        Fenetre fen = new Fenetre();
-        fen.setVisible(true);
+    public Fenetre(ModeleExemplaire modeleExemplaire) {
+
+        setTitle("Ajout d'un exemplaire");
+
+        this.setSize(250, 200);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+
+        this.modeleExemplaire = modeleExemplaire;
+
+        form = new Formulaire();
+        JPanel boutons = new JPanel();
+
+        setContentPane(form);
+
+        boutons.add(new JButton(new SubmitAction()));
+
+        getContentPane().add(boutons, BorderLayout.SOUTH);
+        setVisible(true);
     }
 
 
+    private class RemoveAction extends AbstractAction {
+        private RemoveAction() {
+            super("Supprimmer");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            int selection = tableau.getSelectedRow();
+
+            modeleExemplaire.removeCar(selection);
+
+            revalidate();
+
+        }
+    }
+
+
+    private class SelectAction extends AbstractAction {
+        private SelectAction() {
+            super("Selectionner");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            int selection = tableau.getSelectedRow();
+
+            Vehicule v = modeleVehicule.getValue(selection);
+
+            new Fenetre(v);
+        }
+    }
+
+    private class AddAction extends AbstractAction {
+        private AddAction () {
+            super("Ajouter");
+        }
+
+        public void actionPerformed(ActionEvent e) {
+
+            new Fenetre(modeleExemplaire);
+
+        }
+    }
+
+
+    private class SubmitAction extends AbstractAction {
+
+        private SubmitAction() {
+            super("OK");
+        }
+        public void actionPerformed(ActionEvent e) {
+
+            Exemplaire exemplaire = modeleExemplaire.getValue(0);
+
+            JFormattedTextField[] f = form.getFtf();
+
+            exemplaire.setKilometres(Integer.parseInt(f[0].getText().replaceAll(",", "")));
+            exemplaire.setImmat(f[1].getText());
+
+            modeleExemplaire.addCar(exemplaire);
+
+            revalidate();
+
+        }
+    }
 }

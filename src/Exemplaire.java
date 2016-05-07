@@ -8,13 +8,14 @@ import java.util.ListIterator;
  */
 public class Exemplaire  {
 
-    private int numero, kilometres;
+    private int kilometres;
     private static int ID;
+    private String immat;
     private Vehicule vehiculeReference;
 
-    public Exemplaire (Vehicule vehiculeReference, int numero, int kilometres, int ID) {
+    public Exemplaire (Vehicule vehiculeReference, String immat, int kilometres, int ID) {
         this.vehiculeReference = vehiculeReference;
-        this.numero = numero;
+        this.immat = immat;
         this.kilometres = kilometres;
         this.ID = ID;
     }
@@ -26,9 +27,9 @@ public class Exemplaire  {
         return ID;
     }
 
-    public int getNumero() {
+    public String getImmat() {
 
-        return this.numero;
+        return this.immat;
     }
 
     public int getKilometres() {
@@ -40,11 +41,22 @@ public class Exemplaire  {
         return vehiculeReference;
     }
 
+
+    //-------Setters------------------------
+
+    public void setImmat(String immat) {
+        this.immat = immat;
+    }
+
+    public void setKilometres(int kilometres) {
+        this.kilometres = kilometres;
+    }
+
     //-----------------------------------
 
     public void print() {
         vehiculeReference.print();
-        System.out.println("Numero : " + this.numero);
+        System.out.println("Immatriculation : " + this.immat);
         System.out.println("kilométrage : " + this.kilometres);
 
     }

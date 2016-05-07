@@ -104,7 +104,8 @@ public class BDD {
 
         ArrayList<Exemplaire> listeDesExemplaires = new ArrayList<Exemplaire>();
 
-        int numero, kilometrage, ID;
+        int kilometrage, ID;
+        String immatriculation;
 
 
 
@@ -119,7 +120,7 @@ public class BDD {
             // Etape 3 : Création d'un statement
             st = cn.createStatement();
 
-            String sql = "SELECT numero, Kilometrage, Exemplaires.ID " +
+            String sql = "SELECT Immatriculation, Kilometrage, Exemplaires.ID " +
                     "FROM Exemplaires, Vehicules " +
                     "WHERE Vehicules.ID = " + v.getID() +
                     " AND Exemplaires.Marque = Vehicules.Marque " +
@@ -132,11 +133,11 @@ public class BDD {
 
             while (rs.next()) {
 
-                numero = rs.getInt("numero");
+                immatriculation = rs.getString("Immatriculation");
                 kilometrage = rs.getInt("Kilometrage");
                 ID = rs.getInt("ID");
 
-                listeDesExemplaires.add(new Exemplaire(v,numero,kilometrage, ID));
+                listeDesExemplaires.add(new Exemplaire(v,immatriculation,kilometrage, ID));
 
             }
         } catch (SQLException e) {
@@ -195,7 +196,7 @@ public class BDD {
     }
 
 
-    public void ajouterUnExemplaire(Vehicule v, int kilometrage, int numero) {
+    public void ajouterUnExemplaire(Exemplaire exemplaire) {
 
         Connection cn =null;
         Statement st =null;
@@ -212,14 +213,14 @@ public class BDD {
             // Etape 3 : Création d'un statement
             st = cn.createStatement();
 
-            if (v.getType() == "Moto") {
+            if (exemplaire.getVehiculeReference().getType() == "Moto") {
 
-                sql = "INSERT INTO Exemplaires (Marque, Type, Cylindree, Kilometrage, numero) " +
-                        "VALUES ('" + v.getMarque() + "', '"+v.getType()+"', " + v.getCylindree()+"," +kilometrage+ ", " +numero+ ")";
+                sql = "INSERT INTO Exemplaires (Marque, Type, Cylindree, Kilometrage, Immatriculation) " +
+                        "VALUES ('" + exemplaire.getVehiculeReference().getMarque() + "', '"+exemplaire.getVehiculeReference().getType()+"', " + exemplaire.getVehiculeReference().getCylindree()+"," +exemplaire.getKilometres()+ ", '" +exemplaire.getImmat()+ "')";
             }
 
-            else sql = "INSERT INTO Exemplaires (Marque, Type, Modele, Kilometrage, numero) " +
-                    "VALUES ('" + v.getMarque() + "', '"+v.getType()+"', '" + v.getModele()+"'," +kilometrage+ ", " +numero+ ")";
+            else sql = "INSERT INTO Exemplaires (Marque, Type, Modele, Kilometrage, Immatriculation) " +
+                    "VALUES ('" + exemplaire.getVehiculeReference().getMarque() + "', '"+exemplaire.getVehiculeReference().getType()+"', '" + exemplaire.getVehiculeReference().getModele()+"'," +exemplaire.getKilometres()+ ", '" +exemplaire.getImmat()+ "')";
 
             // Etape 4 : exécution requête
             st.executeUpdate(sql);
@@ -240,47 +241,6 @@ public class BDD {
         }
     }
 
-    public void updateKilometrage(Exemplaire exemplaire, int kilometrage){
-
-        Connection cn =null;
-        Statement st =null;
-
-        try {
-
-            // Etape 1 : Chargement du driver
-            Class.forName("com.mysql.jdbc.Driver");
-
-            // Etape 2 : récupération de la connexion
-            cn = DriverManager.getConnection(url, login, passwd);
-
-            // Etape 3 : Création d'un statement
-            st = cn.createStatement();
-
-
-            String sql = "UPDATE Exemplaires SET Kilometrage = " + kilometrage +
-                    " WHERE Exemplaires.ID = " + exemplaire.getID();
-
-
-            // Etape 4 : exécution requête
-            st.executeUpdate(sql);
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            // TODO: handle exception
-            e.printStackTrace();
-        } finally {
-            try {
-                // Etape 6 : libérer ressources de la mémoire.
-                cn.close();
-                st.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-
-    }
 
 
     //-------------------------------------------------------------------------------------------
