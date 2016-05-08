@@ -9,7 +9,7 @@ import java.util.ListIterator;
 public class Exemplaire  {
 
     private int kilometres;
-    private static int ID;
+    private int ID;
     private String immat;
     private Vehicule vehiculeReference;
 
@@ -17,14 +17,22 @@ public class Exemplaire  {
         this.vehiculeReference = vehiculeReference;
         this.immat = immat;
         this.kilometres = kilometres;
-        this.ID = ID;
+
+    }
+
+    public Exemplaire(Exemplaire exemplaire) {
+        this.vehiculeReference = exemplaire.vehiculeReference;
+        this.immat = exemplaire.immat;
+        this.kilometres = exemplaire.kilometres;
+        this.ID = exemplaire.ID;
+
     }
 
     //--------Getters--------------------------
 
 
-    public static int getID() {
-        return ID;
+    public int getID() {
+        return this.ID;
     }
 
     public String getImmat() {

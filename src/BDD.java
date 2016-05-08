@@ -174,7 +174,7 @@ public class BDD {
             // Etape 3 : Création d'un statement
             st = cn.createStatement();
 
-            String sql = "DELETE FROM Exemplaires WHERE Exemplaires.ID =  " + exemplaire.getID();
+            String sql = "DELETE FROM Exemplaires WHERE Exemplaires.Immatriculation =  '" + exemplaire.getImmat() + "'";
 
             // Etape 4 : exécution requête
             st.executeUpdate(sql);
@@ -324,16 +324,16 @@ public class BDD {
             // Etape 3 : Création d'un statement
             st = cn.createStatement();
 
-            String sql = "DELETE FROM Emprunteur WHERE Emprunteur.ID = " + emprunteur.getId();
+            String sql = "DELETE FROM Emprunteur WHERE Emprunteur.Adresse = '" + emprunteur.getAdresse() + "'";
 
             // Etape 4 : exécution requête
             st.executeUpdate(sql);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Erreur dans la saisie SQL");
         } catch (ClassNotFoundException e) {
             // TODO: handle exception
-            e.printStackTrace();
+            System.out.println("Erreur dans la saisie SQL");
         } finally {
             try {
                 // Etape 6 : libérer ressources de la mémoire.
@@ -346,7 +346,7 @@ public class BDD {
 
     }
 
-    public void ajouterEmprunteur(String nom, String prenom, String adresse) {
+    public void ajouterEmprunteur(Emprunteur emprunteur) {
 
         Connection cn =null;
         Statement st =null;
@@ -364,7 +364,7 @@ public class BDD {
 
 
             String sql = "INSERT INTO Emprunteur (Nom, Prenom, Adresse) " +
-                    "VALUES ('" + nom + "', '"+ prenom +"', '" + adresse+"')";
+                    "VALUES ('" + emprunteur.getNom() + "', '"+ emprunteur.getPrenom() +"', '" + emprunteur.getAdresse()+"')";
 
             // Etape 4 : exécution requête
             st.executeUpdate(sql);
@@ -404,6 +404,219 @@ public class BDD {
 
 
             String sql = "UPDATE Emprunteur SET Adresse =  '" + adresse + "' WHERE Emprunteur.ID = " + emprunteur.getId();
+
+            // Etape 4 : exécution requête
+            st.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            try {
+                // Etape 6 : libérer ressources de la mémoire.
+                cn.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+
+
+
+    //-----------------Transactions---------------------------------------------------------------
+
+    public void ajouterTransaction(java.util.Date date_debut, java.util.Date date_fin, String immat, String nom, String prenom) {
+
+        Connection cn =null;
+        Statement st =null;
+
+        try {
+
+            // Etape 1 : Chargement du driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Etape 2 : récupération de la connexion
+            cn = DriverManager.getConnection(url, login, passwd);
+
+            // Etape 3 : Création d'un statement
+            st = cn.createStatement();
+
+
+            String sql = "INSERT INTO Transactions (Date_debut, Date_fin, Immatriculation, Emprunteur_nom, Emprunteur_prenom, Statut) " +
+                    "VALUES ('" + date_debut + "', '"+ date_fin +"', '" + immat + "', '" + nom + "', '" + prenom + "', TRUE)";
+
+            // Etape 4 : exécution requête
+            st.executeUpdate(sql);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO: handle exception
+            e.printStackTrace();
+        } finally {
+            try {
+                // Etape 6 : libérer ressources de la mémoire.
+                cn.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public ArrayList<Transactions> recupererToutesLesTransactions() {
+
+        // Information d'accès à la base de données
+
+        Connection cn =null;
+        Statement st =null;
+        ResultSet rs =null;
+
+        ArrayList<Transactions> listeDesTransactions = new ArrayList<Transactions>();
+
+        String nom, prenom, immat;
+        int ID;
+        boolean statut;
+        java.sql.Date date_debut, date_fin;
+
+
+        try {
+
+            // Etape 1 : Chargement du driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Etape 2 : récupération de la connexion
+            cn = DriverManager.getConnection(url, login, passwd);
+
+            // Etape 3 : Création d'un statement
+            st = cn.createStatement();
+
+            String sql = "SELECT * FROM Transactions";
+
+            // Etape 4 : exécution requête
+            rs = st.executeQuery(sql);
+
+            // Si récup données alors étapes 5 (parcours Resultset)
+
+            while (rs.next()) {
+
+                ID = rs.getInt("ID");
+                date_debut = rs.getDate("Date_debut");
+                date_fin = rs.getDate("Date_fin");
+                statut = rs.getBoolean("Statut");
+                immat = rs.getString("Immatriculation");
+                nom = rs.getString("Emprunteur_nom");
+                prenom = rs.getString("Emprunteur_prenom");
+
+
+                listeDesTransactions.add(new Transactions(ID, statut, date_debut, date_fin, nom, prenom, immat));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Etape 6 : libérer ressources de la mémoire.
+                cn.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listeDesTransactions;
+    }
+
+    public ArrayList<Transactions> recupererTransactions(Emprunteur emprunteur) {
+
+        // Information d'accès à la base de données
+
+        Connection cn =null;
+        Statement st =null;
+        ResultSet rs =null;
+
+        ArrayList<Transactions> listeDesTransactions = new ArrayList<Transactions>();
+
+        String nom, prenom, immat;
+        int ID;
+        boolean statut;
+        java.sql.Date date_debut, date_fin;
+
+
+        try {
+
+            // Etape 1 : Chargement du driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Etape 2 : récupération de la connexion
+            cn = DriverManager.getConnection(url, login, passwd);
+
+            // Etape 3 : Création d'un statement
+            st = cn.createStatement();
+
+            String sql = "SELECT * FROM Transactions WHERE Transactions.Emprunteur_nom = '"+ emprunteur.getNom() + "' AND Transactions.Emprunteur_prenom = '" + emprunteur.getPrenom()+ "'";
+
+            // Etape 4 : exécution requête
+            rs = st.executeQuery(sql);
+
+            // Si récup données alors étapes 5 (parcours Resultset)
+
+            while (rs.next()) {
+
+                ID = rs.getInt("ID");
+                date_debut = rs.getDate("Date_debut");
+                date_fin = rs.getDate("Date_fin");
+                statut = rs.getBoolean("Statut");
+                immat = rs.getString("Immatriculation");
+                nom = rs.getString("Emprunteur_nom");
+                prenom = rs.getString("Emprunteur_prenom");
+
+
+                listeDesTransactions.add(new Transactions(ID, statut, date_debut, date_fin, nom, prenom, immat));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // Etape 6 : libérer ressources de la mémoire.
+                cn.close();
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return listeDesTransactions;
+    }
+
+    public void terminerTransaction(Transactions transactions) {
+
+        Connection cn =null;
+        Statement st =null;
+
+        try {
+
+            // Etape 1 : Chargement du driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            // Etape 2 : récupération de la connexion
+            cn = DriverManager.getConnection(url, login, passwd);
+
+            // Etape 3 : Création d'un statement
+            st = cn.createStatement();
+
+
+            String sql = "UPDATE Transactions SET Statut = FALSE WHERE Transactions.Immatriculation = '" + transactions.getImmat() + "'";
 
             // Etape 4 : exécution requête
             st.executeUpdate(sql);

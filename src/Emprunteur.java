@@ -21,6 +21,10 @@ public class Emprunteur {
 
     }
 
+    public Emprunteur() {
+
+    }
+
     //--------Getters--------------------------
 
     public String getNom() {
@@ -39,6 +43,21 @@ public class Emprunteur {
         return this.id;
     }
 
+    //-------Setters---------------------------------
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+
     //-----------------------------------
 
     public void print() {
@@ -48,12 +67,4 @@ public class Emprunteur {
 
     }
 
-    public void louer() {
-
-
-    }
-
-    public void ramener() {
-
-    }
 }
