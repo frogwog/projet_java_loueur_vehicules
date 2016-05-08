@@ -87,6 +87,7 @@ public class Formulaire extends JPanel {
 
         }
 
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         for (int j = 0; j < ftf.length; j += 1) {
             JPanel borderPanel = new JPanel(new java.awt.BorderLayout());

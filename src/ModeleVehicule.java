@@ -1,4 +1,7 @@
+import javax.jws.WebParam;
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,13 +10,15 @@ import java.util.List;
 public class ModeleVehicule extends AbstractTableModel {
 
     BDD bdd = new BDD("jdbc:mysql://localhost:3306/LocationVoiture","root", "root");
-    private final List<Vehicule> listeVehicules= bdd.recupererTousLesVehicules();
+    private final ArrayList<Vehicule> listeVehicules;
 
     private final String[] entetes = {"Marque", "Type", "Modele", "Cylindree"};
 
     public ModeleVehicule() {
         super();
+        listeVehicules= bdd.recupererTousLesVehicules();
     }
+
 
     public int getRowCount() {
         return listeVehicules.size();
@@ -49,10 +54,21 @@ public class ModeleVehicule extends AbstractTableModel {
         return listeVehicules.get(rowIndex);
     }
 
+    public ArrayList<Vehicule> getListeVehicules() {
+        return listeVehicules;
+    }
 
-    public void removeCar(int rowIndex) {
-        listeVehicules.remove(rowIndex);
+    public boolean rechercheVehicule(String recherche, int row) {
 
-        fireTableRowsDeleted(rowIndex, rowIndex);
+
+        if (recherche.equals(listeVehicules.get(row).getMarque()) || recherche.equals(listeVehicules.get(row).getType()) || recherche.equals(Integer.toString(listeVehicules.get(row).getCylindree())) || recherche.equals(listeVehicules.get(row).getModele()) ) {
+            return false;
+        }
+        else  {
+            listeVehicules.remove(row);
+            fireTableRowsDeleted(row, row);
+            return true;
+        }
+
     }
 }

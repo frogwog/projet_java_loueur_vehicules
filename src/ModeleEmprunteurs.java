@@ -16,6 +16,11 @@ public class ModeleEmprunteurs extends AbstractTableModel {
         listeEmprunteurs = bdd.recupererTousLesEmprunteurs();
     }
 
+    public ModeleEmprunteurs(ArrayList<Emprunteur> listeEmprunteurs) {
+        super();
+        this.listeEmprunteurs = listeEmprunteurs;
+    }
+
     public int getRowCount() {
         return listeEmprunteurs.size();
     }
@@ -48,6 +53,10 @@ public class ModeleEmprunteurs extends AbstractTableModel {
         return listeEmprunteurs.get(rowIndex);
     }
 
+    public ArrayList<Emprunteur> getListeEmprunteurs() {
+        return listeEmprunteurs;
+    }
+
 
     public void removeEmprunteur(int rowIndex) {
 
@@ -63,5 +72,19 @@ public class ModeleEmprunteurs extends AbstractTableModel {
         bdd.ajouterEmprunteur(emprunteur);
 
         fireTableRowsInserted(listeEmprunteurs.size() -1, listeEmprunteurs.size() -1);
+    }
+
+    public boolean rechercheEmprunteur(String recherche, int row) {
+
+
+        if (recherche.equals(listeEmprunteurs.get(row).getNom()) || recherche.equals(listeEmprunteurs.get(row).getPrenom())  || recherche.equals(listeEmprunteurs.get(row).getAdresse()) ) {
+            return false;
+        }
+        else  {
+            listeEmprunteurs.remove(row);
+            fireTableRowsDeleted(row, row);
+            return true;
+        }
+
     }
 }

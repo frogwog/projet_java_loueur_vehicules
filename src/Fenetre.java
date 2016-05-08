@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.io.FileOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -20,6 +21,7 @@ public class Fenetre extends JFrame {
     private ModeleTransactions modeleTransactions;
     private JTable tableau;
     private Formulaire form;
+    private JFormattedTextField search;
     private Exemplaire exemplaireSelectionne;
     private Emprunteur emprunteurSelectionne;
     private Transactions transactionSelectionne;
@@ -36,14 +38,21 @@ public class Fenetre extends JFrame {
 
             modeleVehicule = new ModeleVehicule();
             tableau = new JTable(modeleVehicule);
-
             getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 
+
+            JPanel recherche = new JPanel();
+            search = new JFormattedTextField(new String());
+            search.setPreferredSize(new Dimension(150,30));
+            recherche.add(search);
+            recherche.add(new JButton(new SearchVehiculeAction()));
+            getContentPane().add(recherche, BorderLayout.NORTH);
+
+
             JPanel boutons = new JPanel();
-
             boutons.add(new JButton(new SelectAction()));
-
             getContentPane().add(boutons, BorderLayout.SOUTH);
+
             setVisible(true);
         }
 
@@ -56,50 +65,66 @@ public class Fenetre extends JFrame {
 
             modeleEmprunteurs = new ModeleEmprunteurs();
             tableau = new JTable(modeleEmprunteurs);
-
             getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 
+            JPanel recherche = new JPanel();
+            search = new JFormattedTextField(new String());
+            search.setPreferredSize(new Dimension(150,30));
+            recherche.add(search);
+            recherche.add(new JButton(new SearchEmprunteurAction()));
+            getContentPane().add(recherche, BorderLayout.NORTH);
+
             JPanel boutons = new JPanel();
-
             boutons.add(new JButton(new SelectEmprunteurAction()));
-
             getContentPane().add(boutons, BorderLayout.SOUTH);
+
             setVisible(true);
         }
 
         else if (i == 2) {
 
-            setTitle("Liste Emprunteurs");
+            setTitle("Liste des Transactions");
 
             this.setSize(700, 500);
             this.setLocationRelativeTo(null);
 
             modeleTransactions = new ModeleTransactions();
             tableau = new JTable(modeleTransactions);
-
             getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
+
+            JPanel recherche = new JPanel();
+            search = new JFormattedTextField(new String());
+            search.setPreferredSize(new Dimension(150,30));
+            recherche.add(search);
+            recherche.add(new JButton(new SearchTransactionAction()));
+            getContentPane().add(recherche, BorderLayout.NORTH);
 
             setVisible(true);
         }
 
         else if (i == 3) {
 
-            setTitle("Liste Emprunteurs");
+            setTitle("Liste des Emprunteurs");
 
             this.setSize(700, 500);
             this.setLocationRelativeTo(null);
 
             modeleEmprunteurs = new ModeleEmprunteurs();
             tableau = new JTable(modeleEmprunteurs);
-
             getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 
-            JPanel boutons = new JPanel();
+            JPanel recherche = new JPanel();
+            search = new JFormattedTextField(new String());
+            search.setPreferredSize(new Dimension(150,30));
+            recherche.add(search);
+            recherche.add(new JButton(new SearchEmprunteurAction()));
+            getContentPane().add(recherche, BorderLayout.NORTH);
 
+            JPanel boutons = new JPanel();
             boutons.add(new JButton(new AddEmprunteurAction()));
             boutons.add(new JButton(new RemoveEmprunteurAction()));
-
             getContentPane().add(boutons, BorderLayout.SOUTH);
+
             setVisible(true);
         }
 
@@ -141,14 +166,18 @@ public class Fenetre extends JFrame {
 
         modeleEmprunteurs = new ModeleEmprunteurs();
         tableau = new JTable(modeleEmprunteurs);
-
         getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 
-        JPanel boutons = new JPanel();
+        JPanel recherche = new JPanel();
+        search = new JFormattedTextField(new String());
+        search.setPreferredSize(new Dimension(150,30));
+        recherche.add(search);
+        recherche.add(new JButton(new SearchEmprunteurAction()));
+        getContentPane().add(recherche, BorderLayout.NORTH);
 
+        JPanel boutons = new JPanel();
         boutons.add(new JButton(new AddEmprunteurAction()));
         boutons.add(new JButton(new LouerAction()));
-
         getContentPane().add(boutons, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -156,7 +185,7 @@ public class Fenetre extends JFrame {
     }
 
 
-    //-----------Constructeur pour afficher les transactions---------------------------
+    //-----------Constructeur pour afficher les transactions d'un emprunteur---------------------------
 
     public Fenetre(Emprunteur emprunteur) {
 
@@ -165,16 +194,12 @@ public class Fenetre extends JFrame {
         this.setLocationRelativeTo(null);
 
         emprunteurSelectionne = emprunteur;
-
         modeleTransactions = new ModeleTransactions(emprunteur);
         tableau = new JTable(modeleTransactions);
-
         getContentPane().add(new JScrollPane(tableau), BorderLayout.CENTER);
 
         JPanel boutons = new JPanel();
-
         boutons.add(new JButton(new FinishTransactionAction()));
-
         getContentPane().add(boutons, BorderLayout.SOUTH);
 
         setVisible(true);
@@ -595,6 +620,107 @@ public class Fenetre extends JFrame {
 
         }
     }
+
+
+    //---------Bouton Rechercher une Voiture-------------------------------
+
+    private class SearchVehiculeAction extends AbstractAction {
+
+        private SearchVehiculeAction() {
+            super("Rechercher");
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            boolean aSupprime;
+
+            for (int i = 0 ; i < modeleVehicule.getListeVehicules().size() ; i++) {
+
+                aSupprime = modeleVehicule.rechercheVehicule(search.getText(), i);
+
+                if (aSupprime) {
+                    i = -1;
+                }
+            }
+
+            if (modeleVehicule.getListeVehicules().size() == 0) {
+
+                JOptionPane jop1 = new JOptionPane();
+                jop1.showMessageDialog(null, "Pas de résultat pour votre recherche", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }
+
+
+
+    //--------Bouton pour rechercher un emprunteur----------------------
+
+    private class SearchEmprunteurAction extends AbstractAction {
+
+        private SearchEmprunteurAction() {
+            super("Rechercher");
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            boolean aSupprime;
+
+            for (int i = 0 ; i < modeleEmprunteurs.getListeEmprunteurs().size() ; i++) {
+
+                aSupprime = modeleEmprunteurs.rechercheEmprunteur(search.getText(), i);
+
+                if (aSupprime) {
+                    i = -1;
+                }
+            }
+
+            if (modeleEmprunteurs.getListeEmprunteurs().size() == 0) {
+
+                JOptionPane jop1 = new JOptionPane();
+                jop1.showMessageDialog(null, "Pas de résultat pour votre recherche", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+
+    //------Bouton Rechercher une transaction---------------------------
+
+    private class SearchTransactionAction extends AbstractAction {
+
+        private SearchTransactionAction() {
+            super("Rechercher");
+        }
+
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            boolean aSupprime;
+
+            for (int i = 0 ; i < modeleTransactions.getListeTransactions().size() ; i++) {
+
+                aSupprime = modeleTransactions.rechercheTransaction(search.getText(), i);
+
+                if (aSupprime) {
+                    i = -1;
+                }
+            }
+
+            if (modeleTransactions.getListeTransactions().size() == 0) {
+
+                JOptionPane jop1 = new JOptionPane();
+                jop1.showMessageDialog(null, "Pas de résultat pour votre recherche", "Erreur", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }
+
+    //-------Bouton regarder les transactions Terminées----------------
 
 
 }
