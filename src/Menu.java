@@ -11,18 +11,35 @@ public class Menu extends JFrame {
 
         setTitle("CARAUTO");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(700, 500);
+        this.setSize(250, 150);
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
 
+
+        JPanel bouton = new JPanel();
+        bouton.setLayout(new BoxLayout(bouton, BoxLayout.Y_AXIS));
+        bouton.add(new JButton(new LouerAction()));
+
+        JPanel bouton2 = new JPanel();
+        bouton2.setLayout(new BoxLayout(bouton2, BoxLayout.Y_AXIS));
+        bouton2.add(new JButton(new RendreAction()));
+
+        JPanel bouton3 = new JPanel();
+        bouton3.setLayout(new BoxLayout(bouton3, BoxLayout.Y_AXIS));
+        bouton3.add(new JButton(new TransactionAction()));
+
+        JPanel bouton4 = new JPanel();
+        bouton4.setLayout(new BoxLayout(bouton4, BoxLayout.Y_AXIS));
+        bouton4.add(new JButton(new EmprunteursAction()));
 
         JPanel boutons = new JPanel();
+        boutons.setLayout(new BoxLayout(boutons, BoxLayout.PAGE_AXIS));
+        boutons.add(bouton);
+        boutons.add(bouton2);
+        boutons.add(bouton3);
+        boutons.add(bouton4);
 
-        boutons.add(new JButton(new LouerAction()));
-        boutons.add(new JButton(new RendreAction()));
-        boutons.add(new JButton(new TransactionAction()));
-        boutons.add(new JButton(new EmprunteursAction()));
-
-        getContentPane().add(boutons, BorderLayout.CENTER);
+        getContentPane().add(boutons);
 
         setVisible(true);
     }
